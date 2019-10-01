@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
 
 import static MavenHomeWork2.LoadProperties.props;
+import static java.lang.Double.parseDouble;
 
 public class Orangehrm extends Utils {
     LoadProperties props = new LoadProperties();
@@ -29,7 +30,7 @@ driver.get("https://opensource-demo.orangehrmlive.com");
     }
 
 @Test
-public void userShouldBeAbleToLoginSuccessfully() {
+public void userShouldBeAbleToAssignLeave() {
      pointcursorToWebelement(By.xpath("//b[contains(text(),'Leave')]"));//mouse hover on the leave tab
     clickElement(By.xpath(" //a[@id='menu_leave_assignLeave']"));//click on assign leave
     String expectedAssignLeave = "https://opensource-demo.orangehrmlive.com/index.php/leave/assignLeave";//expected webpage
@@ -37,13 +38,24 @@ public void userShouldBeAbleToLoginSuccessfully() {
     Assert.assertEquals(actualAssignLeave, expectedAssignLeave);//assertion
     enterText(By.xpath("//input[@id='assignleave_txtEmployee_empName']"), props.getProperty("EmployeeName"));//enter existing employee name
     getselectedTextFromDropdownList(By.xpath("//select[@id='assignleave_txtLeaveType']"), props.getProperty("LeaveType"));//select leave type from the dropdown list
+    String entitledleave= getTextFromContent(By.xpath("//div[contains(text(), '80.00')]"));
     clearAndEnterText(By.xpath("//input[@id='assignleave_txtFromDate']"), props.getProperty("FromDate"));//enter a from date
     clearAndEnterText(By.xpath("//input[@id='assignleave_txtToDate']"), props.getProperty("ToDate"));// enter a to date
-    clickElement(By.xpath("//input[@id='assignBtn']"));//click on save button
-    String expectedleave = "https://opensource-demo.orangehrmlive.com/index.php/leave/assignLeave";//expected changes after updation
-    String actualleave = driver.getCurrentUrl();//actual changes after updation
-    Assert.assertEquals(actualleave, expectedleave);//asserting actual with expected
-}
+    clickElement(By.xpath("//input[@id='assignBtn']"));//click on assign button
+    waitUntilEleemtLoadAndIsClickable((By.xpath("//input[@id='assignBtn']")), 2000);//wait before clicking on assign button
+    clickElement(By.xpath("//input[@id='assignBtn']"));//click on assign button
+    String expected= entitledleave.substring(0, 5);//to eliminate unncessary words
+    System.out.println(expected);//to print the number of days before asigning leave
+    Double entitledleavebalance=Double.parseDouble(expected);//converting string to double
+    Double numberofdaysofleave= entitledleavebalance-24.00;//deducting assigned leave from the balance
+    System.out.println(numberofdaysofleave);//expected
+    String remainingleave= getTextFromContent(By.xpath("//div[contains (text(),'56.00')]"));//to get text after assigning leave
+    String remainingdays=remainingleave.substring(0, 5);//eleminating unnecessary words
+    Double balanceafterassign=Double.parseDouble(remainingdays);//converting to double
+    System.out.println(balanceafterassign);//actual
+    Assert.assertEquals(remainingdays, numberofdaysofleave);//asserting actual with expected
+
+    }
 @Test
 public void adminShouldBeAbleToUpdateEmployeePersonalDetails(){
         pointcursorToWebelement(By.xpath("//b[contains(text(),'PIM')]"));//mouse hover on PIM
@@ -58,9 +70,13 @@ public void adminShouldBeAbleToUpdateEmployeePersonalDetails(){
     } catch (Exception e) {
         e.printStackTrace();
     }
+
     String expectedupdate = "./Screenshots/drivinglicence.png";
     String actualupdate = "./Screenshots/drivinglicence.png";
     Assert.assertEquals(actualupdate, expectedupdate);//asserting the actual message with the expected one
+
+
+
 }
 
 @Test

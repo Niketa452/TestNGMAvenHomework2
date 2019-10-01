@@ -115,7 +115,7 @@ public class Utils extends BasePAge {
 
     }
 
-    public static boolean isWebElementVisible(By by) {//to know whether webelement is visible or not
+    public static boolean isWebElementDisplayed(By by) {//to know whether webelement is visible or not
         boolean result = driver.findElement(by).isDisplayed();
         return result;
     }
