@@ -4,17 +4,19 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
 import org.apache.commons.io.FileUtils;
 
+import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Utils extends BasePAge {
@@ -69,7 +71,20 @@ public class Utils extends BasePAge {
         actions.moveToElement(menuList).perform();
 
     }
-
+    public static void autosuggestivedropdown(By by, String search_keyword){
+    Actions actions = new Actions(driver);
+    actions.moveToElement(driver.findElement(by)).sendKeys(search_keyword).perform();
+    }
+    public static void rightclickonelement(By by){
+        Actions actions = new Actions(driver);
+        WebElement element=driver.findElement(by);
+        actions.moveToElement(element).contextClick().perform();
+    }
+    public static void scrollinview(By by){
+        WebElement element=driver.findElement(by);
+        JavascriptExecutor jse=(JavascriptExecutor)driver;
+        jse.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
     public static void launchingChromeDriver() {
         System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\Webdriver\\chromedriver.exe");//calling the chromedriver path
         driver = new ChromeDriver();//creating chrome driver object
@@ -212,6 +227,19 @@ public class Utils extends BasePAge {
         File scrFile = scrShot.getScreenshotAs(OutputType.FILE);//call getScreenshot method to create image file
         File destFile = new File(fileWithPath);//move image file to new destination
         FileUtils.copyFile(scrFile, destFile);//copy file to destinaiton.
+
+    }
+    public static void fluentwait(){
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(ofSeconds(30)).pollingEvery(ofSeconds(3))
+                .ignoring(NoSuchElementException.class);
+        WebElement foo=wait.until(new Function<WebDriver, WebElement>() {
+            @Override
+            public WebElement apply(WebDriver webDriver) {
+                return null;//if else statement with locator is scenario based
+                //eg driver. findElement(By.(").is displayed then execute this block, else return null
+            }
+        });
+
 
     }
 }

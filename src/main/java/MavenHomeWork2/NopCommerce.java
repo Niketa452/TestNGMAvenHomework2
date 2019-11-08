@@ -241,7 +241,7 @@ public class NopCommerce extends Utils {
         String actual = getTextFromContent(By.xpath("//div[@class='bar-notification success']"));//get confirmation message text
         String expected = "The product has been added to your product comparison";//expected confirmation message text
         softAssert.assertEquals(actual, expected);//soft assert
-        clickElement(By.xpath("//div[@class='item-grid']//div[2]//div[1]//div[2]//div[3]//div[2]//input[2]"));//click on second product "Add to Compare list" button
+        clickElement(By.xpath("//div[@class='item-grid']//div[2]//div[1]//div[2]//div[3]//div[2]//input[2]"));//click on second product "Add to Compare list" butto
         Thread.sleep(2000);//waiting time after clicking the second product.
         String actual_2 = getTextFromContent(By.xpath("//div[@class='bar-notification success']"));//get confrimation message text
         String expected_2 = "The product has been added to your product comparison";//exptected confirmation message text

@@ -20,8 +20,11 @@ public class SheinCoUk extends Utils {
     @Test
     public void userShouldBeAbleToAddKidsProductsToCart(){
         s_assert= new SoftAssert();
+
         clickElement(By.xpath("//a[@title='Kids']"));//click on kids tab
         pointcursorToWebelement(By.xpath("//span[contains(text(),'Shoes & Accessories')]"));//mouse hover on shoes and accessories
+        clickElement(By.xpath("//div[@class='accept-btn']"));
+        clickElement(By.xpath("//div[@class='she-btn-black']"));
         clickElement(By.xpath("//a[contains(text(),'Older Girls 7-12 yrs')]"));//click on older girls 7-12
         clickElement(By.xpath("//img[@alt='Kids Deer Charm Crossbody Bag']"));//click on a bag image
         waitForElementVisible(By.xpath("//a[@id='710549']"), 2000);
